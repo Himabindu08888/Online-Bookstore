@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmed - PageTurner</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<div class="container">
+    <div class="card" style="max-width:600px; text-align:center;">
+        <h1 style="color:var(--success);">✔ Order Placed Successfully!</h1>
+        <p>Your order <strong th:text="'#' + ${order.id}"></strong> has been confirmed.</p>
+        <p>Total: <strong th:text="'₹' + ${order.totalAmount}"></strong></p>
+        <p>Shipping to: <span th:text="${order.shippingAddress}"></span></p>
+        <a class="btn" th:href="@{/orders}">View My Orders</a>
+        <a class="btn btn-outline" th:href="@{/books}" style="margin-left:10px;">Continue Shopping</a>
+    </div>
+</div>
+</body>
+</html>

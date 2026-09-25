@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout - PageTurner</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<div class="container">
+    <h1 class="page-title">Checkout</h1>
+
+    <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+
+    <div class="card" style="max-width:600px;">
+        <h3>Order Summary</h3>
+        <div class="cart-row" th:each="item : ${cartItems}">
+            <span th:text="${item.book.title} + ' x ' + ${item.quantity}"></span>
+            <span th:text="'₹' + ${item.subtotal}"></span>
+        </div>
+        <div class="cart-total">Total: ₹<span th:text="${total}"></span></div>
+
+        <form th:action="@{/checkout}" method="post" style="margin-top:20px;">
+            <div class="form-group">
+                <label>Shipping Address</label>
+                <textarea name="shippingAddress" rows="3" required></textarea>
+            </div>
+            <button class="btn" type="submit" style="width:100%;">Place Order</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

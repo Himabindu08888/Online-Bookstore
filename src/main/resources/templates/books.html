@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Browse Books - PageTurner</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<div class="container">
+    <h1 class="page-title">Browse Books</h1>
+
+    <form class="search-bar" th:action="@{/books}" method="get">
+        <input type="text" name="keyword" placeholder="Search by title or author..." th:value="${keyword}">
+        <select name="genre" onchange="this.form.submit()">
+            <option value="">All Genres</option>
+            <option value="Fiction" th:selected="${selectedGenre == 'Fiction'}">Fiction</option>
+            <option value="Non-Fiction" th:selected="${selectedGenre == 'Non-Fiction'}">Non-Fiction</option>
+            <option value="Fantasy" th:selected="${selectedGenre == 'Fantasy'}">Fantasy</option>
+            <option value="Thriller" th:selected="${selectedGenre == 'Thriller'}">Thriller</option>
+            <option value="Technology" th:selected="${selectedGenre == 'Technology'}">Technology</option>
+            <option value="Self-Help" th:selected="${selectedGenre == 'Self-Help'}">Self-Help</option>
+            <option value="Finance" th:selected="${selectedGenre == 'Finance'}">Finance</option>
+        </select>
+        <button class="btn" type="submit">Search</button>
+    </form>
+
+    <div class="book-grid" th:if="${!books.isEmpty()}">
+        <div class="book-card" th:each="book : ${books}">
+            <a th:href="@{/books/{id}(id=${book.id})}">
+                <img th:src="${book.imageUrl}" th:alt="${book.title}" onerror="this.src='https://via.placeholder.com/200x260?text=No+Cover'">
+            </a>
+            <div class="book-card-body">
+                <span class="stock-tag" th:classappend="${book.inStock} ? 'stock-in' : 'stock-out'"
+                      th:text="${book.inStock} ? 'In Stock' : 'Out of Stock'"></span>
+                <h3><a th:href="@{/books/{id}(id=${book.id})}" th:text="${book.title}"></a></h3>
+                <div class="author" th:text="${book.author}"></div>
+                <div class="price" th:text="'₹' + ${book.price}"></div>
+                <a class="btn btn-sm" th:href="@{/books/{id}(id=${book.id})}">View Details</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="empty-state" th:if="${books.isEmpty()}">
+        <p>No books found matching your search.</p>
+    </div>
+</div>
+
+<div class="footer">Online Book Store &mdash; Demo Project</div>
+</body>
+</html>

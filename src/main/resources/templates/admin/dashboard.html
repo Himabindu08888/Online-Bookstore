@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Manage Books</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<div class="container">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+        <h1 class="page-title" style="margin:0;">Manage Books</h1>
+        <div>
+            <a class="btn" th:href="@{/admin/books/new}">+ Add Book</a>
+            <a class="btn btn-outline" th:href="@{/admin/orders}">View Orders</a>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Title</th><th>Author</th><th>Genre</th><th>Price</th><th>Stock</th><th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.genre}"></td>
+            <td th:text="'₹' + ${book.price}"></td>
+            <td th:text="${book.stock}"></td>
+            <td>
+                <a class="btn btn-sm btn-outline" th:href="@{/admin/books/{id}/edit(id=${book.id})}">Edit</a>
+                <form th:action="@{/admin/books/{id}/delete(id=${book.id})}" method="post" style="display:inline;"
+                      onsubmit="return confirm('Delete this book?');">
+                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

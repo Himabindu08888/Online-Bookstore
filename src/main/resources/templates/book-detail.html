@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${book.title} + ' - PageTurner'"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<div class="container">
+    <div class="detail-layout card">
+        <img th:src="${book.imageUrl}" th:alt="${book.title}" onerror="this.src='https://via.placeholder.com/260x340?text=No+Cover'">
+        <div class="detail-info">
+            <h1 th:text="${book.title}"></h1>
+            <p class="author">by <strong th:text="${book.author}"></strong> &middot; <span th:text="${book.genre}"></span></p>
+            <p class="price" th:text="'₹' + ${book.price}"></p>
+            <span class="stock-tag" th:classappend="${book.inStock} ? 'stock-in' : 'stock-out'"
+                  th:text="${book.inStock} ? (${book.stock} + ' in stock') : 'Out of Stock'"></span>
+            <p th:text="${book.description}" style="margin-top:16px; line-height:1.5;"></p>
+
+            <form sec:authorize="isAuthenticated()" th:action="@{/cart/add/{id}(id=${book.id})}" method="post" th:if="${book.inStock}">
+                <input class="qty-input" type="number" name="quantity" value="1" min="1" th:max="${book.stock}">
+                <button class="btn" type="submit">Add to Cart</button>
+            </form>
+
+            <a sec:authorize="!isAuthenticated()" class="btn" th:href="@{/login}">Login to purchase</a>
+
+            <p><a th:href="@{/books}">&larr; Back to catalog</a></p>
+        </div>
+    </div>
+</div>
+
+<div class="footer">Online Book Store &mdash; Demo Project</div>
+</body>
+</html>
